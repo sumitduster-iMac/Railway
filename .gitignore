@@ -63,3 +63,13 @@ fastlane/test_output
 
 # Generated at build time by scripts/generate_app_icons.swift
 Railway/Assets.xcassets/AppIcon.appiconset/icon_*.png
+
+# Node / Electron
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.electron/
+dist/
+out/
+assets/icon.png

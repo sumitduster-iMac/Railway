@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSP: 'unsafe-inline' is needed for inline scripts in this local Electron app.
+       Since all content is loaded from local files and not user-generated, the security risk is minimal. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://railway.com https://*.railway.com https://railway.app https://*.railway.app; style-src 'self' 'unsafe-inline' https://railway.com https://*.railway.com; script-src 'self' 'unsafe-inline' https://railway.com https://*.railway.com; img-src 'self' https: data:; frame-src https://railway.com https://*.railway.com; connect-src https://railway.com https://*.railway.com wss: https:; font-src 'self' https: data:;">
+  <title>Railway</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-content">
+        <div class="logo-container">
+          <img src="assets/icon.svg" class="logo" alt="Railway">
+        </div>
+        <h1 class="loading-title">Railway</h1>
+        <div class="loading-dots" aria-label="Loading">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <p class="loading-subtitle">Initializing your deployment workspace...</p>
+      </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar" id="nav-bar">
+      <div class="nav-left">
+        <button class="nav-btn" id="backBtn" title="Back">
+          <span class="icon">◄</span>
+        </button>
+        <button class="nav-btn" id="forwardBtn" title="Forward">
+          <span class="icon">►</span>
+        </button>
+        <button class="nav-btn" id="refreshBtn" title="Refresh">
+          <span class="icon">⟳</span>
+        </button>
+      </div>
+
+      <div class="nav-center">
+        <div class="url-display">
+          <span class="globe">🌐</span>
+          <span id="urlText">railway.com</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="nav-btn" id="homeBtn" title="Home">
+          <span class="icon">🏠</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- WebView Frame Container -->
+    <div class="frame-container">
+      <webview
+        id="railwayWebview"
+        src="https://railway.com/"
+        allowpopups
+        partition="persist:railway"
+      ></webview>
+      <div id="top-progress" class="top-progress hidden">
+        <div id="top-progress-bar" class="top-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="status-bar">
+      <div class="status-left">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Connecting…</span>
+      </div>
+      <div class="status-right">
+        <span id="versionText">Railway Desktop</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const webview = document.getElementById('railwayWebview');
+    const loading = document.getElementById('loading-screen');
+    const backBtn = document.getElementById('backBtn');
+    const forwardBtn = document.getElementById('forwardBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const urlText = document.getElementById('urlText');
+
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const versionText = document.getElementById('versionText');
+
+    const topProgress = document.getElementById('top-progress');
+    const topProgressBar = document.getElementById('top-progress-bar');
+
+    function setStatus(connected) {
+      if (connected) {
+        statusDot.classList.add('connected');
+        statusDot.classList.remove('disconnected');
+        statusText.textContent = 'Connected';
+      } else {
+        statusDot.classList.remove('connected');
+        statusDot.classList.add('disconnected');
+        statusText.textContent = navigator.onLine ? 'Disconnected' : 'Offline';
+      }
+    }
+
+    function updateNav() {
+      try {
+        backBtn.disabled = !webview.canGoBack();
+        forwardBtn.disabled = !webview.canGoForward();
+      } catch (_) {
+        // no-op
+      }
+    }
+
+    function updateUrl() {
+      try {
+        const u = webview.getURL();
+        const host = (new URL(u)).host || 'railway.com';
+        urlText.textContent = host;
+      } catch (_) {
+        urlText.textContent = 'railway.com';
+      }
+    }
+
+    function showProgress() {
+      topProgress.classList.remove('hidden');
+      topProgressBar.style.width = '10%';
+    }
+
+    function setProgress(pct) {
+      topProgressBar.style.width = `${pct}%`;
+    }
+
+    function hideProgress() {
+      topProgressBar.style.width = '100%';
+      setTimeout(() => {
+        topProgress.classList.add('hidden');
+        topProgressBar.style.width = '0%';
+      }, 150);
+    }
+
+    // Initial loading screen behavior (matches reference timing)
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        loading.classList.add('fade-out');
+        setTimeout(() => loading.remove(), 550);
+      }, 2000);
+
+      if (window.electron) {
+        versionText.textContent = `Railway Desktop (Electron ${window.electron.version})`;
+      }
+    });
+
+    // Navigation buttons
+    backBtn.addEventListener('click', () => webview.goBack());
+    forwardBtn.addEventListener('click', () => webview.goForward());
+    refreshBtn.addEventListener('click', () => webview.reload());
+    homeBtn.addEventListener('click', () => webview.loadURL('https://railway.com/'));
+
+    // Webview lifecycle
+    webview.addEventListener('dom-ready', () => {
+      setStatus(true);
+      updateNav();
+      updateUrl();
+    });
+
+    webview.addEventListener('did-start-loading', () => {
+      showProgress();
+      setProgress(25);
+    });
+
+    webview.addEventListener('did-stop-loading', () => {
+      setProgress(85);
+      updateNav();
+      updateUrl();
+      hideProgress();
+      setStatus(true);
+    });
+
+    webview.addEventListener('did-fail-load', () => {
+      setStatus(false);
+      hideProgress();
+    });
+
+    webview.addEventListener('did-navigate', () => {
+      updateNav();
+      updateUrl();
+    });
+
+    webview.addEventListener('did-navigate-in-page', () => {
+      updateNav();
+      updateUrl();
+    });
+
+    window.addEventListener('online', () => setStatus(true));
+    window.addEventListener('offline', () => setStatus(false));
+  </script>
+</body>
+</html>

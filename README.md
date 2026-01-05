@@ -1,22 +1,20 @@
-# Railway
+# Railway Desktop App
 
-A native macOS application that provides quick access to [Railway](https://railway.com) - a deployment platform for developers.
+A beautiful native macOS application for [Railway](https://railway.com) with an enhanced, modern UI (Lovable-style shell).
 
 ## Features
 
-- Native macOS app built with SwiftUI
-- Displays the Railway website in a native WebView
-- Modern “desktop shell” UI (Lovable-style): loading screen, glassy navigation bar, status bar
-- Built-in navigation controls (back/forward/reload/home) + “open in browser”
-- Connection status indicator + app version display
-- Universal build support (Intel + Apple Silicon) via GitHub Actions
+- Enhanced modern UI: loading screen, glassmorphism navigation bar, status bar
+- Full web access to Railway.com inside an embedded webview
+- Navigation controls: back, forward, refresh, home
+- Status indicator: connected/offline + version display
+- Secure Electron config: context isolation enabled
 
 ## Building
 
 ### Requirements
-- macOS 13.0 or later
-- Xcode 15.0 or later
-- Intel Mac or Apple Silicon Mac
+- Node.js (v20+ recommended)
+- macOS (Intel-based Mac target, matching reference)
 
 ### Build Instructions
 
@@ -26,42 +24,32 @@ git clone https://github.com/sumitduster-iMac/Railway.git
 cd Railway
 ```
 
-2. Open the project in Xcode:
-```bash
-open Railway.xcodeproj
-```
-
-3. Build and run:
-   - Select the Railway scheme
-   - Choose your target device
-   - Press `Cmd + R` to build and run
-
-### Command Line Build
-
-To build from the command line for Intel Mac:
+2. Install dependencies:
 
 ```bash
-xcodebuild \
-  -project Railway.xcodeproj \
-  -scheme Railway \
-  -configuration Release \
-  -arch x86_64 \
-  -derivedDataPath build
+npm ci
 ```
 
-The built app will be located at `build/Build/Products/Release/Railway.app`
+3. Run in development:
+
+```bash
+npm start
+```
+
+### Building the App
+
+```bash
+npm run build
+```
+
+The built app will be located in `dist/`.
 
 ## GitHub Actions
 
-The project includes a GitHub Actions workflow that automatically builds the app on every push/PR to the main branches. The workflow:
+The project includes two GitHub Actions workflows:
 
-- Runs on `macos-latest`
-- Builds a universal app (`x86_64` + `arm64`)
-- Uploads the built app as a zipped artifact
-
-To create a GitHub Release, push a version tag (e.g. `v1.0.0`). The workflow will attach `Railway-macos-universal.zip` to the release.
-
-You can find the workflow configuration in `.github/workflows/build-macos.yml`.
+- `CI`: validates structure and code on push/PR
+- `Build and Release`: builds the macOS app and uploads artifacts; pushing a tag like `v1.0.0` creates a GitHub Release
 
 ## License
 
