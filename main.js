@@ -3,6 +3,10 @@ const path = require('path');
 
 let mainWindow;
 
+// macOS menu bar uses app name for "About <name>".
+// Electron defaults this to package.json "name" (railway-mac-app), so force a friendly name.
+app.setName('Railway');
+
 function createWindow() {
   const iconPath = path.join(__dirname, 'assets', 'icon.png');
 
@@ -58,6 +62,7 @@ app.whenReady().then(() => {
         credits: 'Developed by Sumit Duster',
         website: 'https://railway.com',
         copyright: `Copyright © ${new Date().getFullYear()} Railway · Developed by Sumit Duster`,
+        iconPath: path.join(__dirname, 'assets', 'icon.png'),
       });
     } catch (_) {
       // Ignore if not supported in this Electron version/environment.

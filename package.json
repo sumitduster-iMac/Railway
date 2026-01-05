@@ -1,5 +1,5 @@
 {
-  "name": "railway-mac-app",
+  "name": "railway",
   "version": "1.0.0",
   "description": "A beautiful native macOS application for Railway.com with an enhanced, modern UI.",
   "main": "main.js",
