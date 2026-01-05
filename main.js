@@ -48,6 +48,22 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  // Customize the macOS "About" window (shown in the screenshot).
+  if (process.platform === 'darwin') {
+    try {
+      app.setAboutPanelOptions({
+        applicationName: 'Railway',
+        applicationVersion: app.getVersion(),
+        // Shows as a dedicated "Credits" line in the About panel on macOS.
+        credits: 'Developed by Sumit Duster',
+        website: 'https://railway.com',
+        copyright: `Copyright © ${new Date().getFullYear()} Railway · Developed by Sumit Duster`,
+      });
+    } catch (_) {
+      // Ignore if not supported in this Electron version/environment.
+    }
+  }
+
   // Ensure dock icon is correct in development builds on macOS.
   if (process.platform === 'darwin' && app.dock) {
     const iconPath = path.join(__dirname, 'assets', 'icon.png');
