@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline';">
+  <title>About Railway</title>
+  <link rel="stylesheet" href="about.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <img class="icon" src="assets/icon.png" alt="Railway" />
+      <div class="title">Railway</div>
+      <div class="meta" id="version">Version</div>
+      <a class="link" href="https://railway.com" target="_blank" rel="noreferrer">railway.com</a>
+    </div>
+  </div>
+
+  <script>
+    const el = document.getElementById('version');
+    if (window.electron && window.electron.appVersion) {
+      el.textContent = `Version ${window.electron.appVersion}`;
+    }
+  </script>
+</body>
+</html>

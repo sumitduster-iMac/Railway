@@ -1,11 +1,50 @@
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, Menu, shell } = require('electron');
 const path = require('path');
 
 let mainWindow;
+let aboutWindow;
 
 // macOS menu bar uses app name for "About <name>".
 // Electron defaults this to package.json "name" (railway-mac-app), so force a friendly name.
 app.setName('Railway');
+
+function showAboutWindow() {
+  if (aboutWindow && !aboutWindow.isDestroyed()) {
+    aboutWindow.focus();
+    return;
+  }
+
+  aboutWindow = new BrowserWindow({
+    width: 420,
+    height: 320,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    title: 'About Railway',
+    backgroundColor: '#0F172A',
+    show: false,
+    center: true,
+    titleBarStyle: 'hiddenInset',
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
+    }
+  });
+
+  aboutWindow.removeMenu();
+  aboutWindow.loadFile('about.html');
+
+  aboutWindow.once('ready-to-show', () => {
+    aboutWindow.show();
+  });
+
+  aboutWindow.on('closed', () => {
+    aboutWindow = null;
+  });
+}
 
 function createWindow() {
   const iconPath = path.join(__dirname, 'assets', 'icon.png');
@@ -52,19 +91,28 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  // Customize the macOS "About" window (shown in the screenshot).
   if (process.platform === 'darwin') {
-    try {
-      app.setAboutPanelOptions({
-        applicationName: 'Railway',
-        applicationVersion: app.getVersion(),
-        website: 'https://railway.com',
-        copyright: `Copyright © ${new Date().getFullYear()} Railway`,
-        iconPath: path.join(__dirname, 'assets', 'icon.png'),
-      });
-    } catch (_) {
-      // Ignore if not supported in this Electron version/environment.
-    }
+    // Replace the default About panel so we can show only one version string.
+    const template = [
+      {
+        label: app.name,
+        submenu: [
+          { label: `About ${app.name}`, click: () => showAboutWindow() },
+          { type: 'separator' },
+          { role: 'services' },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideOthers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' }
+        ]
+      },
+      { role: 'editMenu' },
+      { role: 'viewMenu' },
+      { role: 'windowMenu' }
+    ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
   }
 
   // Ensure dock icon is correct in development builds on macOS.

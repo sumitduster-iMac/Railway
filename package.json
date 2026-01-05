@@ -50,6 +50,8 @@
     "files": [
       "main.js",
       "preload.js",
+      "about.html",
+      "about.css",
       "index.html",
       "styles.css",
       "assets/**/*"
