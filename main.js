@@ -58,10 +58,8 @@ app.whenReady().then(() => {
       app.setAboutPanelOptions({
         applicationName: 'Railway',
         applicationVersion: app.getVersion(),
-        // Shows as a dedicated "Credits" line in the About panel on macOS.
-        credits: 'Developed by Sumit Duster',
         website: 'https://railway.com',
-        copyright: `Copyright © ${new Date().getFullYear()} Railway · Developed by Sumit Duster`,
+        copyright: `Copyright © ${new Date().getFullYear()} Railway`,
         iconPath: path.join(__dirname, 'assets', 'icon.png'),
       });
     } catch (_) {
