@@ -33,7 +33,7 @@ jobs:
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
       
-    - name: Create DMG (optional)
+    - name: Prepare app for distribution
       run: |
         mkdir -p dist
         cp -r build/Build/Products/Release/Railway.app dist/
