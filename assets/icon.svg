@@ -1,25 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3B82F6"/>
-      <stop offset="1" stop-color="#EC4899"/>
+    <!-- Railway.app inspired gradient: dark background with purple accent -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0f"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
     </linearGradient>
-    <radialGradient id="v" cx="50%" cy="45%" r="70%">
-      <stop offset="0" stop-color="#000" stop-opacity="0"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0.25"/>
-    </radialGradient>
-    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity="0.25"/>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
 
-  <rect x="90" y="90" width="844" height="844" rx="190" fill="url(#g)" filter="url(#s)"/>
-  <rect x="90" y="90" width="844" height="844" rx="190" fill="url(#v)"/>
-
-  <!-- Simple "R" mark (placeholder until you provide Railway official logo assets) -->
-  <path
-    d="M364 718V306h198c48 0 86 13 113 39c27 26 41 60 41 102c0 32-9 60-27 85c-18 25-43 42-75 52l108 134h-96l-94-121h-73v121h-95Zm95-194h90c20 0 36-5 47-16c11-11 17-26 17-45c0-19-6-34-17-45c-11-11-27-16-47-16h-90v122Z"
-    fill="#FFFFFF"
-    opacity="0.92"
-  />
+  <!-- Background with rounded corners (macOS style) -->
+  <rect x="82" y="82" width="860" height="860" rx="186" fill="url(#bg)"/>
+  
+  <!-- Railway logo mark - stylized tracks/rails -->
+  <g transform="translate(512, 512)" filter="url(#shadow)">
+    <!-- Horizontal rail lines -->
+    <rect x="-280" y="-120" width="560" height="32" rx="16" fill="url(#accent)" opacity="0.9"/>
+    <rect x="-280" y="-40" width="560" height="32" rx="16" fill="url(#accent)" opacity="0.9"/>
+    <rect x="-280" y="40" width="560" height="32" rx="16" fill="url(#accent)" opacity="0.9"/>
+    <rect x="-280" y="120" width="560" height="32" rx="16" fill="url(#accent)" opacity="0.9"/>
+    
+    <!-- Vertical ties (sleepers) -->
+    <rect x="-220" y="-140" width="16" height="280" rx="8" fill="#ffffff" opacity="0.15"/>
+    <rect x="-140" y="-140" width="16" height="280" rx="8" fill="#ffffff" opacity="0.15"/>
+    <rect x="-60" y="-140" width="16" height="280" rx="8" fill="#ffffff" opacity="0.15"/>
+    <rect x="20" y="-140" width="16" height="280" rx="8" fill="#ffffff" opacity="0.15"/>
+    <rect x="100" y="-140" width="16" height="280" rx="8" fill="#ffffff" opacity="0.15"/>
+    <rect x="180" y="-140" width="16" height="280" rx="8" fill="#ffffff" opacity="0.15"/>
+  </g>
 </svg>
