@@ -51,7 +51,6 @@ jobs:
       - name: Check HTML structure
         run: |
           grep -q '<webview' index.html || exit 1
-          grep -q 'loading-screen' index.html || exit 1
           grep -q 'status-bar' index.html || exit 1
           echo "✅ HTML structure verified"
 

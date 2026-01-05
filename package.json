@@ -4,7 +4,6 @@
   "description": "A beautiful native macOS application for Railway.com with an enhanced, modern UI.",
   "main": "main.js",
   "scripts": {
-    "prestart": "npm run generate-icons",
     "start": "electron .",
     "generate-icons": "node scripts/generate-icons.mjs",
     "prebuild": "npm run generate-icons",

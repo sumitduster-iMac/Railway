@@ -17,6 +17,17 @@ const SIZE = 1024;
 
 async function main() {
   await fs.mkdir(assetsDir, { recursive: true });
+
+  // Fast path: do nothing if the PNG already exists.
+  try {
+    await fs.access(pngPath);
+    // eslint-disable-next-line no-console
+    console.log(`✅ Icon already present: ${path.relative(projectRoot, pngPath)}`);
+    return;
+  } catch (_) {
+    // continue
+  }
+
   const svg = await fs.readFile(svgPath, 'utf8');
 
   const resvg = new Resvg(svg, {
