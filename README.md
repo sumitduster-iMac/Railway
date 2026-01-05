@@ -1,6 +1,6 @@
 # Railway Desktop App
 
-A beautiful native macOS application for [Railway](https://railway.com) with an enhanced, modern UI (Lovable-style shell).
+A beautiful native macOS application for [Railway](https://railway.com) with an enhanced, modern UI.
 
 ## Features
 
