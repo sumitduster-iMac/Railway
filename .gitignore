@@ -60,3 +60,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Generated at build time by scripts/generate_app_icons.swift
+Railway/Assets.xcassets/AppIcon.appiconset/icon_*.png
