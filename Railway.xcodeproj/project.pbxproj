@@ -72,6 +72,7 @@
 			buildPhases = (
 				A1000018000000000000001 /* Sources */,
 				A1000012000000000000001 /* Frameworks */,
+				A1000030000000000000001 /* Generate App Icon */,
 				A1000019000000000000001 /* Resources */,
 			);
 			buildRules = (
@@ -140,6 +141,27 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A1000030000000000000001 /* Generate App Icon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/scripts/generate_app_icons.swift",
+				"$(SRCROOT)/Railway/Assets.xcassets/AppIcon.appiconset/Contents.json",
+			);
+			name = "Generate App Icon";
+			outputPaths = (
+				"$(SRCROOT)/Railway/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -euo pipefail\n/usr/bin/swift \"${SRCROOT}/scripts/generate_app_icons.swift\" \"${SRCROOT}/Railway/Assets.xcassets/AppIcon.appiconset\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin XCBuildConfiguration section */
 		A1000022000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -178,7 +200,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -241,7 +263,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

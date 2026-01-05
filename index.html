@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSP: 'unsafe-inline' is needed for inline scripts in this local Electron app.
+       Since all content is loaded from local files and not user-generated, the security risk is minimal. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://railway.com https://*.railway.com https://railway.app https://*.railway.app; style-src 'self' 'unsafe-inline' https://railway.com https://*.railway.com; script-src 'self' 'unsafe-inline' https://railway.com https://*.railway.com; img-src 'self' https: data:; frame-src https://railway.com https://*.railway.com; connect-src https://railway.com https://*.railway.com wss: https:; font-src 'self' https: data:;">
+  <title>Railway</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- WebView Frame Container -->
+    <div class="frame-container">
+      <webview
+        id="railwayWebview"
+        src="https://railway.com/"
+        allowpopups
+        partition="persist:railway"
+      ></webview>
+      <div id="top-progress" class="top-progress hidden">
+        <div id="top-progress-bar" class="top-progress-bar"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const webview = document.getElementById('railwayWebview');
+
+    const topProgress = document.getElementById('top-progress');
+    const topProgressBar = document.getElementById('top-progress-bar');
+
+    function showProgress() {
+      topProgress.classList.remove('hidden');
+      topProgressBar.style.width = '10%';
+    }
+
+    function setProgress(pct) {
+      topProgressBar.style.width = `${pct}%`;
+    }
+
+    function hideProgress() {
+      topProgressBar.style.width = '100%';
+      setTimeout(() => {
+        topProgress.classList.add('hidden');
+        topProgressBar.style.width = '0%';
+      }, 150);
+    }
+
+    // Webview lifecycle
+    webview.addEventListener('dom-ready', () => {
+      // no-op
+    });
+
+    webview.addEventListener('did-start-loading', () => {
+      showProgress();
+      setProgress(25);
+    });
+
+    webview.addEventListener('did-stop-loading', () => {
+      setProgress(85);
+      hideProgress();
+    });
+
+    webview.addEventListener('did-fail-load', () => {
+      hideProgress();
+    });
+  </script>
+</body>
+</html>
