@@ -39,6 +39,11 @@
   color: rgba(148, 163, 184, 0.9);
 }
 
+.developer {
+  margin-top: 8px;
+  color: rgba(226, 232, 240, 0.78);
+}
+
 .link {
   display: inline-block;
   margin-top: 14px;
