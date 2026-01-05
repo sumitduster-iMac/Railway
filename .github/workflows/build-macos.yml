@@ -3,6 +3,8 @@ name: Build macOS App
 on:
   push:
     branches: [ main, master ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
@@ -53,3 +55,47 @@ jobs:
         name: Railway-macos-universal
         path: dist/Railway-macos-universal.zip
         retention-days: 30
+
+  release:
+    name: Create Release
+    runs-on: macos-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Show Xcode version
+      run: xcodebuild -version
+
+    - name: Build Railway app (universal)
+      run: |
+        set -euo pipefail
+        xcodebuild \
+          -project Railway.xcodeproj \
+          -scheme Railway \
+          -configuration Release \
+          -destination 'generic/platform=macOS' \
+          -derivedDataPath build \
+          ONLY_ACTIVE_ARCH=NO \
+          ARCHS="x86_64 arm64" \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
+    - name: Package
+      run: |
+        set -euo pipefail
+        mkdir -p dist
+        cp -r build/Build/Products/Release/Railway.app dist/
+        ditto -c -k --sequesterRsrc --keepParent "dist/Railway.app" "dist/Railway-macos-universal.zip"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          dist/Railway-macos-universal.zip
+        generate_release_notes: true

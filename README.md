@@ -6,8 +6,10 @@ A native macOS application that provides quick access to [Railway](https://railw
 
 - Native macOS app built with SwiftUI
 - Displays the Railway website in a native WebView
-- Optimized for Intel Mac (x86_64 architecture)
-- Clean, minimal interface with hidden title bar
+- Modern “desktop shell” UI (Lovable-style): loading screen, glassy navigation bar, status bar
+- Built-in navigation controls (back/forward/reload/home) + “open in browser”
+- Connection status indicator + app version display
+- Universal build support (Intel + Apple Silicon) via GitHub Actions
 
 ## Building
 
@@ -56,6 +58,8 @@ The project includes a GitHub Actions workflow that automatically builds the app
 - Runs on `macos-latest`
 - Builds a universal app (`x86_64` + `arm64`)
 - Uploads the built app as a zipped artifact
+
+To create a GitHub Release, push a version tag (e.g. `v1.0.0`). The workflow will attach `Railway-macos-universal.zip` to the release.
 
 You can find the workflow configuration in `.github/workflows/build-macos.yml`.
 

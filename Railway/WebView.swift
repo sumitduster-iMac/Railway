@@ -1,13 +1,14 @@
 import AppKit
 import SwiftUI
 import WebKit
+import Network
 
 @MainActor
 final class WebViewModel: NSObject, ObservableObject {
     // MARK: - Configuration
 
     /// When enabled, navigation to non-Railway hosts will be opened in the default browser.
-    @Published var openExternalLinksInBrowser: Bool = false
+    @Published var openExternalLinksInBrowser: Bool = true
 
     // MARK: - Web state
 
@@ -18,10 +19,13 @@ final class WebViewModel: NSObject, ObservableObject {
     @Published private(set) var canGoBack: Bool = false
     @Published private(set) var canGoForward: Bool = false
     @Published private(set) var lastErrorMessage: String?
+    @Published private(set) var isOnline: Bool = true
 
     let webView: WKWebView
 
     private var observations: [NSKeyValueObservation] = []
+    private let pathMonitor = NWPathMonitor()
+    private let pathQueue = DispatchQueue(label: "Railway.NetworkMonitor")
 
     override init() {
         let configuration = WKWebViewConfiguration()
@@ -34,6 +38,15 @@ final class WebViewModel: NSObject, ObservableObject {
 
         webView.navigationDelegate = self
         webView.uiDelegate = self
+
+        pathMonitor.pathUpdateHandler = { [weak self] path in
+            guard let self else { return }
+            let online = (path.status == .satisfied)
+            Task { @MainActor in
+                self.isOnline = online
+            }
+        }
+        pathMonitor.start(queue: pathQueue)
 
         observations = [
             webView.observe(\.title, options: [.initial, .new]) { [weak self] _, _ in
@@ -61,6 +74,10 @@ final class WebViewModel: NSObject, ObservableObject {
                 Task { @MainActor in self.canGoForward = self.webView.canGoForward }
             },
         ]
+    }
+
+    deinit {
+        pathMonitor.cancel()
     }
 
     // MARK: - Actions
@@ -95,6 +112,10 @@ final class WebViewModel: NSObject, ObservableObject {
     func openInBrowser() {
         guard let url = currentURL else { return }
         NSWorkspace.shared.open(url)
+    }
+
+    func loadHome() {
+        load(URL(string: "https://railway.com")!)
     }
 
     func clearWebsiteData() async {

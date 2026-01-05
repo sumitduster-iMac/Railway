@@ -9,7 +9,7 @@ struct RailwayApp: App {
             ContentView()
                 .environmentObject(web)
         }
-        .windowToolbarStyle(.unifiedCompact)
+        .windowStyle(.hiddenTitleBar)
         .commands {
             CommandGroup(replacing: .newItem) { }
             RailwayCommands(web: web)
