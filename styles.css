@@ -55,65 +55,6 @@ webview {
   transition: width 0.25s ease;
 }
 
-/* Status Bar */
-.status-bar {
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  background: rgba(15, 23, 42, 0.55);
-  border-top: 1px solid rgba(59, 130, 246, 0.18);
-  backdrop-filter: blur(12px);
-}
-
-.status-left, .status-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #94A3B8;
-  font-size: 0.8rem;
-}
-
-.credit {
-  color: rgba(226, 232, 240, 0.78);
-}
-
-.sep {
-  color: rgba(148, 163, 184, 0.7);
-}
-
-.credit-link {
-  color: rgba(226, 232, 240, 0.82);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.25);
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.credit-link:hover {
-  color: rgba(236, 72, 153, 0.9);
-  border-color: rgba(236, 72, 153, 0.45);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(148, 163, 184, 0.6);
-  box-shadow: 0 0 0 rgba(0,0,0,0);
-}
-
-.status-dot.connected {
-  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
-  animation: pulse 2s infinite;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.35);
-}
-
-.status-dot.disconnected {
-  background: rgba(239, 68, 68, 0.85);
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
-}
-
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;

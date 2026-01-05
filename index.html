@@ -26,43 +26,13 @@
       </div>
     </div>
 
-    <!-- Status Bar -->
-    <div class="status-bar" id="status-bar">
-      <div class="status-left">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">Connecting…</span>
-      </div>
-      <div class="status-right">
-        <span class="credit">Developed by sumitduster</span>
-        <span class="sep">•</span>
-        <a class="credit-link" href="https://railway.com" target="_blank" rel="noreferrer">railway.com</a>
-        <span class="sep">•</span>
-        <span id="versionText">Railway Desktop</span>
-      </div>
-    </div>
   </div>
 
   <script>
     const webview = document.getElementById('railwayWebview');
 
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    const versionText = document.getElementById('versionText');
-
     const topProgress = document.getElementById('top-progress');
     const topProgressBar = document.getElementById('top-progress-bar');
-
-    function setStatus(connected) {
-      if (connected) {
-        statusDot.classList.add('connected');
-        statusDot.classList.remove('disconnected');
-        statusText.textContent = 'Connected';
-      } else {
-        statusDot.classList.remove('connected');
-        statusDot.classList.add('disconnected');
-        statusText.textContent = navigator.onLine ? 'Disconnected' : 'Offline';
-      }
-    }
 
     function showProgress() {
       topProgress.classList.remove('hidden');
@@ -81,15 +51,9 @@
       }, 150);
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.electron) {
-        versionText.textContent = `Railway Desktop (Electron ${window.electron.version})`;
-      }
-    });
-
     // Webview lifecycle
     webview.addEventListener('dom-ready', () => {
-      setStatus(true);
+      // no-op
     });
 
     webview.addEventListener('did-start-loading', () => {
@@ -100,16 +64,11 @@
     webview.addEventListener('did-stop-loading', () => {
       setProgress(85);
       hideProgress();
-      setStatus(true);
     });
 
     webview.addEventListener('did-fail-load', () => {
-      setStatus(false);
       hideProgress();
     });
-
-    window.addEventListener('online', () => setStatus(true));
-    window.addEventListener('offline', () => setStatus(false));
   </script>
 </body>
 </html>

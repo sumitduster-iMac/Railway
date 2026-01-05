@@ -51,13 +51,11 @@ jobs:
       - name: Check HTML structure
         run: |
           grep -q '<webview' index.html || exit 1
-          grep -q 'status-bar' index.html || exit 1
           echo "✅ HTML structure verified"
 
       - name: Check CSS features
         run: |
           grep -q '@keyframes' styles.css || exit 1
           grep -q 'linear-gradient' styles.css || exit 1
-          grep -q 'backdrop-filter' styles.css || exit 1
           echo "✅ CSS features verified"
 
