@@ -75,6 +75,26 @@ webview {
   font-size: 0.8rem;
 }
 
+.credit {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+.sep {
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.credit-link {
+  color: rgba(226, 232, 240, 0.82);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.25);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.credit-link:hover {
+  color: rgba(236, 72, 153, 0.9);
+  border-color: rgba(236, 72, 153, 0.45);
+}
+
 .status-dot {
   width: 8px;
   height: 8px;
