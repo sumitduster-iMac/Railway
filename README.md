@@ -51,12 +51,11 @@ The built app will be located at `build/Build/Products/Release/Railway.app`
 
 ## GitHub Actions
 
-The project includes a GitHub Actions workflow that automatically builds the app for Intel Mac on every push to the main branch. The workflow:
+The project includes a GitHub Actions workflow that automatically builds the app on every push/PR to the main branches. The workflow:
 
-- Runs on macOS 13
-- Uses Xcode 15.0
-- Builds for x86_64 architecture (Intel Mac)
-- Uploads the built app as an artifact
+- Runs on `macos-latest`
+- Builds a universal app (`x86_64` + `arm64`)
+- Uploads the built app as a zipped artifact
 
 You can find the workflow configuration in `.github/workflows/build-macos.yml`.
 
