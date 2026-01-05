@@ -12,7 +12,7 @@ struct RailwayApp: App {
         .windowToolbarStyle(.unifiedCompact)
         .commands {
             CommandGroup(replacing: .newItem) { }
-            RailwayCommands()
+            RailwayCommands(web: web)
         }
 
         Settings {
@@ -23,7 +23,7 @@ struct RailwayApp: App {
 }
 
 struct RailwayCommands: Commands {
-    @EnvironmentObject private var web: WebViewModel
+    let web: WebViewModel
 
     var body: some Commands {
         CommandMenu("Navigate") {

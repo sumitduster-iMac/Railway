@@ -93,7 +93,7 @@ struct ContentView: View {
             }
             .navigationTitle(web.title)
             .toolbar {
-                ToolbarItemGroup(placement: .navigation) {
+                ToolbarItem(placement: .navigation) {
                     Button {
                         web.goBack()
                     } label: {
@@ -101,7 +101,9 @@ struct ContentView: View {
                     }
                     .help("Back")
                     .disabled(!web.canGoBack)
+                }
 
+                ToolbarItem(placement: .navigation) {
                     Button {
                         web.goForward()
                     } label: {
@@ -111,16 +113,16 @@ struct ContentView: View {
                     .disabled(!web.canGoForward)
                 }
 
-                ToolbarItemGroup {
+                ToolbarItem(placement: .automatic) {
                     Button {
                         if web.isLoading { web.stopLoading() } else { web.reload() }
                     } label: {
                         Image(systemName: web.isLoading ? "xmark" : "arrow.clockwise")
                     }
                     .help(web.isLoading ? "Stop" : "Reload")
+                }
 
-                    Divider()
-
+                ToolbarItem(placement: .automatic) {
                     Button {
                         selection = .dashboard
                         web.load(RailwaySection.dashboard.url)
@@ -128,7 +130,9 @@ struct ContentView: View {
                         Image(systemName: "bolt.fill")
                     }
                     .help("Dashboard")
+                }
 
+                ToolbarItem(placement: .automatic) {
                     Button {
                         selection = .home
                         web.load(RailwaySection.home.url)
@@ -138,7 +142,7 @@ struct ContentView: View {
                     .help("Home")
                 }
 
-                ToolbarItemGroup(placement: .automatic) {
+                ToolbarItem(placement: .automatic) {
                     Button {
                         web.openInBrowser()
                     } label: {
