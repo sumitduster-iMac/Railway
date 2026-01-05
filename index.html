@@ -27,34 +27,6 @@
       </div>
     </div>
 
-    <!-- Navigation Bar -->
-    <div class="nav-bar" id="nav-bar">
-      <div class="nav-left">
-        <button class="nav-btn" id="backBtn" title="Back">
-          <span class="icon">◄</span>
-        </button>
-        <button class="nav-btn" id="forwardBtn" title="Forward">
-          <span class="icon">►</span>
-        </button>
-        <button class="nav-btn" id="refreshBtn" title="Refresh">
-          <span class="icon">⟳</span>
-        </button>
-      </div>
-
-      <div class="nav-center">
-        <div class="url-display">
-          <span class="globe">🌐</span>
-          <span id="urlText">railway.com</span>
-        </div>
-      </div>
-
-      <div class="nav-right">
-        <button class="nav-btn" id="homeBtn" title="Home">
-          <span class="icon">🏠</span>
-        </button>
-      </div>
-    </div>
-
     <!-- WebView Frame Container -->
     <div class="frame-container">
       <webview
@@ -83,11 +55,6 @@
   <script>
     const webview = document.getElementById('railwayWebview');
     const loading = document.getElementById('loading-screen');
-    const backBtn = document.getElementById('backBtn');
-    const forwardBtn = document.getElementById('forwardBtn');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const homeBtn = document.getElementById('homeBtn');
-    const urlText = document.getElementById('urlText');
 
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
@@ -105,25 +72,6 @@
         statusDot.classList.remove('connected');
         statusDot.classList.add('disconnected');
         statusText.textContent = navigator.onLine ? 'Disconnected' : 'Offline';
-      }
-    }
-
-    function updateNav() {
-      try {
-        backBtn.disabled = !webview.canGoBack();
-        forwardBtn.disabled = !webview.canGoForward();
-      } catch (_) {
-        // no-op
-      }
-    }
-
-    function updateUrl() {
-      try {
-        const u = webview.getURL();
-        const host = (new URL(u)).host || 'railway.com';
-        urlText.textContent = host;
-      } catch (_) {
-        urlText.textContent = 'railway.com';
       }
     }
 
@@ -156,17 +104,9 @@
       }
     });
 
-    // Navigation buttons
-    backBtn.addEventListener('click', () => webview.goBack());
-    forwardBtn.addEventListener('click', () => webview.goForward());
-    refreshBtn.addEventListener('click', () => webview.reload());
-    homeBtn.addEventListener('click', () => webview.loadURL('https://railway.com/'));
-
     // Webview lifecycle
     webview.addEventListener('dom-ready', () => {
       setStatus(true);
-      updateNav();
-      updateUrl();
     });
 
     webview.addEventListener('did-start-loading', () => {
@@ -176,8 +116,6 @@
 
     webview.addEventListener('did-stop-loading', () => {
       setProgress(85);
-      updateNav();
-      updateUrl();
       hideProgress();
       setStatus(true);
     });
@@ -185,16 +123,6 @@
     webview.addEventListener('did-fail-load', () => {
       setStatus(false);
       hideProgress();
-    });
-
-    webview.addEventListener('did-navigate', () => {
-      updateNav();
-      updateUrl();
-    });
-
-    webview.addEventListener('did-navigate-in-page', () => {
-      updateNav();
-      updateUrl();
     });
 
     window.addEventListener('online', () => setStatus(true));
