@@ -29,6 +29,12 @@
 
 ## 🎨 Design
 
+<img width="1411" height="909" alt="Screenshot 2026-01-06 at 3 45 25 PM" src="https://github.com/user-attachments/assets/6d74e76b-2d35-4235-b0d1-0f9f2cfea707" />
+
+<img width="431" height="331" alt="Screenshot 2026-01-06 at 3 45 54 PM" src="https://github.com/user-attachments/assets/8c485782-11b9-41cf-9935-8c2d48e09369" />
+
+
+
 ```
 ┌───────────────────────────────────────────────┐
 │ Navigation Bar (draggable, glassmorphism)     │
